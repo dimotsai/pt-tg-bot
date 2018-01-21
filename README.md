@@ -12,7 +12,7 @@ npm install
 ### Bot Token
 You may want to create a telegram bot by talking to @BotFather. And then you can set the received bot token  in `config/default.properties`.
 ### Authentication to your PT server
-To be able to query your PT server, a auth token is required. To get the token, open the monitoring page and enter your password. Copy the stored cookie in your browser to the config. After that, you have completed your configuration.
+To be able to query your PT server, an auth token is required. To get the token, open the monitoring page and enter your password. Copy the stored cookie in your browser to the config.
 
 ## Usage
 To launch the bot, type the following commands in the project directory:
