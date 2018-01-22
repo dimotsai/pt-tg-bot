@@ -37,8 +37,8 @@ function formatDcaLog(data) {
       + `Volume: ${entry.volume}\n`
       + `Total Amount: ${entry.averageCalculator.totalAmount}\n`
       + `Total Cost: ${entry.averageCalculator.totalCost}\n`
-      + `Average Price: ${entry.currentPrice}\n`
-      + `Current Price: ${entry.averageCalculator.avgPrice}\n`
+      + `Average Price: ${entry.averageCalculator.avgPrice}\n`
+      + `Current Price: ${entry.currentPrice}\n`
       + `Times: ${entry.boughtTimes}\n`
       + `Date: ${d.toLocaleString()}\n`;
     strings.push(string);
@@ -63,8 +63,8 @@ function formatPairsLog(data) {
       + `Profit: ${entry.profit}\n`
       + `Total Amount: ${entry.averageCalculator.totalAmount}\n`
       + `Total Cost: ${entry.averageCalculator.totalCost}\n`
-      + `Average Price: ${entry.currentPrice}\n`
-      + `Current Price: ${entry.averageCalculator.avgPrice}\n`
+      + `Average Price: ${entry.averageCalculator.avgPrice}\n`
+      + `Current Price: ${entry.currentPrice}\n`
       + `Date: ${d.toLocaleString()}\n`;
     strings.push(string);
   }
