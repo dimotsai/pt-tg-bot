@@ -22,8 +22,7 @@ function getData() {
 
 function formatDcaLog(data) {
   let strings = [];
-  for (const entry of data)
-  {
+  for (const entry of data) {
     let firstDate = entry.averageCalculator.firstBoughtDate;
     let d = new Date(Date.UTC(
       firstDate.date.year,
@@ -50,8 +49,7 @@ function formatDcaLog(data) {
 
 function formatPairsLog(data) {
   let strings = [];
-  for (const entry of data)
-  {
+  for (const entry of data) {
     let firstDate = entry.averageCalculator.firstBoughtDate;
     let d = new Date(Date.UTC(
       firstDate.date.year,
@@ -75,11 +73,13 @@ function formatPairsLog(data) {
 }
 
 bot.command('dca', ctx => {
-  if (ctx.chat.id === chatId)
-  {
+  if (ctx.chat.id === chatId) {
     return getData()
       .then(data => {
-        return ctx.reply(formatDcaLog(data.dcaLogData));
+        if (data.dcaLogData.length > 0)
+          return ctx.reply(formatDcaLog(data.dcaLogData));
+        else
+          return ctx.reply('No records');
       })
       .catch(err => {
         return ctx.reply(err);
@@ -88,11 +88,13 @@ bot.command('dca', ctx => {
 });
 
 bot.command('pairs', ctx => {
-  if (ctx.chat.id === chatId)
-  {
+  if (ctx.chat.id === chatId) {
     return getData()
       .then(data => {
-        return ctx.reply(formatPairsLog(data.gainLogData));
+        if (data.gainLogData.length > 0)
+          return ctx.reply(formatPairsLog(data.gainLogData));
+        else
+          return ctx.reply('No records');
       })
       .catch(err => {
         return ctx.reply(err);
