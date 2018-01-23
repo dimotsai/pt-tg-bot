@@ -1,13 +1,19 @@
 const request = require('request-promise');
 const config = require('config');
 const Telegraf = require('telegraf');
+const Markup = require('telegraf/markup');
+
+const Promise = require('bluebird');
 
 const bot = new Telegraf(config.get('telegram.botToken'));
 const chatId = config.get('telegram.chatId');
 
+const dcaMarkup = Markup.inlineKeyboard([Markup.callbackButton('Update', 'update_dca')]).extra();
+const pairsMarkup = Markup.inlineKeyboard([Markup.callbackButton('Update', 'update_pairs')]).extra();
+
 function getData() {
   const options = {
-    uri: config.get('pt.api'),
+    uri: `${config.get('pt.api')}/monitoring/data`,
     qs: {
       _: `${new Date().getTime()}`,
     },
@@ -44,7 +50,10 @@ function formatDcaLog(data) {
     strings.push(string);
   }
 
-  return strings.join('\n');
+  if (data.length === 0)
+    return "No records.";
+  else
+    return strings.join('\n');
 }
 
 function formatPairsLog(data) {
@@ -69,37 +78,44 @@ function formatPairsLog(data) {
     strings.push(string);
   }
 
-  return strings.join('\n');
+  if (data.length === 0)
+    return "No records.";
+  else
+    return strings.join('\n');
 }
 
 bot.command('dca', ctx => {
   if (ctx.chat.id === chatId) {
     return getData()
       .then(data => {
-        if (data.dcaLogData.length > 0)
-          return ctx.reply(formatDcaLog(data.dcaLogData));
-        else
-          return ctx.reply('No records');
+        return ctx.reply(formatDcaLog(data.dcaLogData), dcaMarkup);
       })
-      .catch(err => {
-        return ctx.reply(err);
-      });
+      .catch(err => ctx.reply(err));
   }
 });
 
 bot.command('pairs', ctx => {
   if (ctx.chat.id === chatId) {
     return getData()
-      .then(data => {
-        if (data.gainLogData.length > 0)
-          return ctx.reply(formatPairsLog(data.gainLogData));
-        else
-          return ctx.reply('No records');
-      })
-      .catch(err => {
-        return ctx.reply(err);
-      });
+      .then(data => ctx.reply(formatPairsLog(data.gainLogData), pairsMarkup))
+      .catch(err => ctx.reply(err));
   }
+});
+
+bot.action('update_dca', (ctx, next) => {
+  return getData().then(data => {
+    return ctx.editMessageText(formatDcaLog(data.dcaLogData), dcaMarkup)
+      .catch(err => console.error(err))
+      .then(() => next());
+  });
+});
+
+bot.action('update_pairs', (ctx, next) => {
+  return getData().then(data => {
+    return ctx.editMessageText(formatPairsLog(data.gainLogData) , pairsMarkup)
+      .catch(err => console.error(err))
+      .then(() => next());
+  });
 });
 
 bot.startPolling();

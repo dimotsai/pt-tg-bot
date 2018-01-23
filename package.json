@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
+    "server": "node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Dimo Tsai",
@@ -15,5 +16,9 @@
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
     "telegraf": "^3.17.5"
+  },
+  "devDependencies": {
+    "koa": "^2.4.1",
+    "koa-router": "^7.3.0"
   }
 }
